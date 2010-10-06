@@ -1,0 +1,15 @@
+syntax: glob
+.DS_Store
+.ensime
+lib_managed/
+lift_proto.db.h2.db
+tags
+docs/
+target/
+project/boot
+project/build/target
+project/plugins/src_managed/
+plugins/plugins/lib_managed
+plugins/plugins/project
+project/plugins/src_managed/
+plugins/plugins/target

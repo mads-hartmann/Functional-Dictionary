@@ -1,0 +1,26 @@
+<lift:surround with="default" at="content">
+
+  <lift:FunctionalDictionary.entries>
+      
+      <p> There are currently <entries:size /> entries in the functional dictionary</p>
+      <entries:letters>
+          
+          <h2>
+              <letter:letter />
+          </h2>
+          
+          <ul>
+              <letter:list>
+              <li>  
+                  <h3><entry:name /> </h3>
+                  <p><entry:description /></p>
+              </li>
+              </letter:list>
+          </ul>
+          
+      </entries:letters>
+      
+  </lift:FunctionalDictionary.entries>
+	
+
+</lift:surround>
