@@ -4,7 +4,6 @@ syntax: glob
 lib_managed/
 lift_proto.db.h2.db
 tags
-docs/
 target/
 project/boot
 project/build/target
