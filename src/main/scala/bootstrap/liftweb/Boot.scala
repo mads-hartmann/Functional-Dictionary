@@ -15,9 +15,10 @@ class Boot {
     // build sitemap
     val entries =
       Menu("Home") / "index" ::
-        Menu("Entries") / "entries" ::
-        Menu("Add") / "add" ::
-        Nil
+      Menu("Results") / "search" ::
+      Menu("Entries") / "entries" ::
+      Menu("Add") / "add" ::
+      Nil
 
     LiftRules.setSiteMap(SiteMap(entries: _*))
 

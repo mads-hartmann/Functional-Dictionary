@@ -16,11 +16,18 @@ class FunctionalDictionary {
   def render(xhtml: NodeSeq): NodeSeq =
     bind("dictionary", xhtml,
       "search" -%> text(word.is, s => word(s)),
-      "submit" -%> submit("", () => Unit))
+      "submit" -%> submit("", () => {
+        redirectTo("/search?query="+word)
+      }))
 
-  def results(xhtml: NodeSeq): NodeSeq = word.is match {
-    case "" => NodeSeq.Empty
-    case str => bindResults(str, xhtml)
+  def results(xhtml: NodeSeq): NodeSeq = S.param("query") match {
+    case Full(query) => bindResults(query,xhtml)
+    case Empty => 
+      S.error("Please supply a query")
+      redirectTo("/")
+    case Failure(msg,_,_) => 
+      S.error(msg)
+      redirectTo("/")
   }
 
   def entries(xhtml: NodeSeq): NodeSeq = {

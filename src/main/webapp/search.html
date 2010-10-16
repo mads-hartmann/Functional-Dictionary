@@ -1,0 +1,17 @@
+<lift:surround with="default" at="content">
+
+    <lift:embed what="search_form" />
+
+    <lift:FunctionalDictionary.results>
+	    <p class="info">Found <results:querySize /> matches to your criteria</p>
+	    <ul class="results">
+	        <results:list>
+	        <li>
+	           <h2><result:name /> </h2>
+	           <p><result:description /></p>
+	        </li>
+	        </results:list>
+	    </ul>
+    </lift:FunctionalDictionary.results>
+    
+</lift:surround>
