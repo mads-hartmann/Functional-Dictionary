@@ -1,6 +1,6 @@
 package com.sidewayscoding.snippet
 
-import com.sidewayscoding.model.{ Entry }
+import com.sidewayscoding.model._
 import xml.{ Text, NodeSeq }
 import net.liftweb.http.{ RequestVar }
 import net.liftweb.util.Helpers._
@@ -8,7 +8,6 @@ import net.liftweb.http.S
 import net.liftweb.http.S._
 import net.liftweb.http.SHtml._
 import net.liftweb.common._
-import net.liftweb.mapper._
 
 class FunctionalDictionary {
 
@@ -25,7 +24,7 @@ class FunctionalDictionary {
   }
 
   def entries(xhtml: NodeSeq): NodeSeq = {
-    val all = Entry.findAll(OrderBy(Entry.name, Ascending))
+    val all = Dictionary.findAll
     val entryMap = all.groupBy { entry => entry.name.charAt(0) }
     
     bind("entries", xhtml,
@@ -48,7 +47,7 @@ class FunctionalDictionary {
   }
 
   private def bindResults(query: String, xhtml: NodeSeq): NodeSeq = {
-    val entries = Entry.findAll(Like(Entry.name, "%" + query + "%"))
+    val entries = Dictionary.findAllLike(query)
 
     bind("results", xhtml,
       "querySize" -> Text(entries.size.toString),

@@ -1,26 +1,30 @@
 package com.sidewayscoding.snippet
 
+import com.sidewayscoding.model._
 import xml.{Text, NodeSeq}
 import net.liftweb.util.Helpers._
-import net.liftweb.http.S
+import net.liftweb.http.{S, RequestVar}
 import net.liftweb.http.S._
 import net.liftweb.http.SHtml._
 import net.liftweb.common._
-import com.sidewayscoding.model.{ Entry }
 
 class EntrySnippet {
 
-	def create(xhtml: NodeSeq): NodeSeq = 
-		Entry.create.toForm(Full("Save"), { entry =>
-		  entry.validate match {
-		    case Nil => 
-		      entry.save
-		      S.notice("Successfully created the entry: " + entry.name)
-		      redirectTo("/")
-		    case errors => 
-		      errors.foreach { error => 
-		        S.error(error.field.uniqueFieldId.openOr("") + ": " + error.msg) }
-		  }
-		})
+  object name extends RequestVar[String]("")
+  object description extends RequestVar[String]("")
+
+	def create(xhtml: NodeSeq): NodeSeq = {
+	  bind("entry", xhtml, 
+	    "name" -> text(name, str => name(str)),
+	    "description" -> text(description, str => description(str)),
+	    "submit" -> submit("Save entry", () => {
+	      val e = new Entry(name,description)
+	      Dictionary.add(e)
+	    })
+	  )
+	}
+		
+		
+		
 
 }
