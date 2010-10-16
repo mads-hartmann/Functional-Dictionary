@@ -8,9 +8,10 @@ case class Entry(name: String, description: String) extends Ordered[Entry] {
 
 object Dictionary {
 
+  @volatile
   private var entries = SortedSet[Entry]()
 
-  def add(e: Entry) = entries += e
+  def add(e: Entry) = synchronized { entries += e }
 
   def findAll = entries.toList
 
