@@ -1,11 +1,19 @@
 <lift:surround with="default" at="content">
   
 	<lift:EntrySnippet.create form="POST">
-	    
-	    <entry:name />
-	    <entry:description />
-	    <entry:submit />
-	    
+	    <ul id="create_form">
+	        <li>
+	            <label>Name</label>
+        	    <entry:name />
+	        </li>
+	        <li>
+	            <label>Description</label>
+        	    <entry:description />
+	        </li>
+	        <li>
+	            <entry:submit />
+	        </li>
+	    </ul>
 	</lift:EntrySnippet.create>
 
 </lift:surround>
