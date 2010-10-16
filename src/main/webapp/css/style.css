@@ -59,6 +59,23 @@ p.menu {
     padding-top: 10px;
 }
 
+#lift__noticesContainer___notice ul {
+  list-style: none;
+  background: #d6f8c8;
+  border: 1px solid #9ac5b3;
+  padding: 8px;
+  color: #365b2c;
+  border-radius: 7px;
+}
+
+#lift__noticesContainer___error ul {
+  background: #fec7ca;
+  border: 1px solid #caa6b2;
+  padding: 8px;
+  color: #913c3e;
+  border-radius: 7px;
+}
+
 p.info {
     background: #fcf3db;
     border: 1px solid #cbc8ca;
@@ -98,19 +115,53 @@ h4 {
     padding-bottom: 10px;
 }
 
+.content h2, label {
+  color: #29596e;
+  font-weight: bold;
+}
+
 .content ul.results li h2 {
     width: 180px;
     padding-top: 0px;
     margin-top: 0px;
     float: left;
-    color: #29596e;
-    font-weight: bold;
 }
 
 .content ul.results li p {
     margin-top: 0px;
     padding-left: 20px;
+    padding-top: 5px;
     width: 380px;
     float: left;
     color: #29596e;
+}
+
+#create_form li{
+}
+
+#create_form label {
+  display: block;
+}
+
+#create_form input[type=text], #create_form textarea {
+  display: block;
+  width: 565px;
+  margin-bottom: 20px;
+  background: #fff;
+  border: 2px solid #a5d0e3;
+  padding: 8px;
+  color: #999999;
+  border-radius: 7px;
+  font-size: 16px;
+  outline: none;
+}
+
+#create_form textarea {
+  height: 250px;
+  max-width: 565px;
+}
+
+#create_form input[type=submit] {
+  width: 100px;
+  float: right;
 }
