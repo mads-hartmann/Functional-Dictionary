@@ -11,7 +11,7 @@ import net.liftweb.common._
 
 class FunctionalDictionary {
 
-  object word extends RequestVar[String]("")
+  object word extends RequestVar("")
 
   def render(xhtml: NodeSeq): NodeSeq =
     bind("dictionary", xhtml,
@@ -26,7 +26,7 @@ class FunctionalDictionary {
   def entries(xhtml: NodeSeq): NodeSeq = {
     val all = Dictionary.findAll
     val entryMap = all.groupBy { entry => entry.name.charAt(0) }
-    
+
     bind("entries", xhtml,
       "size" -> all.size.toString,
       "letters" -> entryMap.keys.toList.flatMap { letter =>
