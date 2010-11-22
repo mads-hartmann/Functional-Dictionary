@@ -17,17 +17,16 @@ class FunctionalDictionary {
     bind("dictionary", xhtml,
       "search" -%> text(word.is, s => word(s)),
       "submit" -%> submit("", () => {
-        redirectTo("/search?query="+word)
+        redirectTo("/search?query=" + word)
       }))
 
-  def results(xhtml: NodeSeq): NodeSeq = S.param("query") match {
-    case Full(query) => bindResults(query,xhtml)
-    case Empty => 
+  def results(xhtml: NodeSeq): NodeSeq = {
+    (for (query <- S.param("query")) yield {
+      bindResults(query, xhtml)
+    }) getOrElse {
       S.error("Please supply a query")
       redirectTo("/")
-    case Failure(msg,_,_) => 
-      S.error(msg)
-      redirectTo("/")
+    }
   }
 
   def entries(xhtml: NodeSeq): NodeSeq = {
@@ -42,20 +41,22 @@ class FunctionalDictionary {
         bindLetter(letter, list, nodeseq)
       })
   }
-  
+
   def entry(xhtml: NodeSeq): NodeSeq = {
-    (for(name <- S.param("name");
-         entry <- Dictionary.find(name)) yield {
-      bind("entry", xhtml, 
+    (for (
+      name <- S.param("name");
+      entry <- Dictionary.find(name)
+    ) yield {
+      bind("entry", xhtml,
         "name" -> entry.name,
         "description" -> entry.description.text,
         "descriptionCount" -> entry.descriptions.size,
-        "altDescriptions" -> entry.descriptions.flatMap { description => 
-          bind("altDescription", chooseTemplate("entry","altDescriptions",xhtml), 
+        "altDescriptions" -> entry.descriptions.flatMap { description =>
+          bind("altDescription", chooseTemplate("entry", "altDescriptions", xhtml),
             "descriptionCount" -> description.rank.toString,
             "description" -> description.text)
         })
-    }) getOrElse { 
+    }) getOrElse {
       S.error("Sorry, no entry found")
       NodeSeq.Empty
     }

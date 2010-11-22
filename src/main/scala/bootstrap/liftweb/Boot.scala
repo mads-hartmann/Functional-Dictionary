@@ -10,7 +10,7 @@ class Boot {
     LiftRules.addToPackages("com.sidewayscoding")
 
     LiftRules.statelessRewrite.append {
-      case RewriteRequest( // plugin description
+      case RewriteRequest( 
         ParsePath("entry" :: name :: Nil, _, _, _), _, _) =>
         RewriteResponse("entry" :: Nil, Map("name" -> name))
     }
