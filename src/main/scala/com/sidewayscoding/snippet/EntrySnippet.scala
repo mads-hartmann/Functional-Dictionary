@@ -18,7 +18,8 @@ class EntrySnippet {
       "name" -> text(name, str => name(str)),
       "description" -> textarea(description, str => description(str)),
       "submit" -> submit("Save entry", () => {
-        val e = new Entry(name, description)
+        val desc = Description(description,0)
+        val e = new Entry(name, desc :: Nil)
         Dictionary.add(e)
         S.notice("Horray! The dictionary just grew bigger")
         redirectTo("/")

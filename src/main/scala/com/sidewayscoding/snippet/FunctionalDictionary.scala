@@ -32,7 +32,7 @@ class FunctionalDictionary {
 
   def entries(xhtml: NodeSeq): NodeSeq = {
     val all = Dictionary.findAll
-    val entryMap = all.groupBy { entry => entry.name.charAt(0) }
+    val entryMap = all.groupBy { entry => entry.name.charAt(0).toUpperCase }
 
     bind("entries", xhtml,
       "size" -> all.size.toString,
@@ -42,6 +42,24 @@ class FunctionalDictionary {
         bindLetter(letter, list, nodeseq)
       })
   }
+  
+  def entry(xhtml: NodeSeq): NodeSeq = {
+    (for(name <- S.param("name");
+         entry <- Dictionary.find(name)) yield {
+      bind("entry", xhtml, 
+        "name" -> entry.name,
+        "description" -> entry.description.text,
+        "descriptionCount" -> entry.descriptions.size,
+        "altDescriptions" -> entry.descriptions.flatMap { description => 
+          bind("altDescription", chooseTemplate("entry","altDescriptions",xhtml), 
+            "descriptionCount" -> description.rank.toString,
+            "description" -> description.text)
+        })
+    }) getOrElse { 
+      S.error("Sorry, no entry found")
+      NodeSeq.Empty
+    }
+  }
 
   private def bindLetter(letter: Char, list: List[Entry], xhtml: NodeSeq): NodeSeq = {
     bind("letter", xhtml,
@@ -49,7 +67,8 @@ class FunctionalDictionary {
       "list" -> list.flatMap { entry =>
         bind("entry", chooseTemplate("letter", "list", xhtml),
           "name" -> entry.name,
-          "description" -> entry.description)
+          "description" -> entry.description.text,
+          AttrBindParam("link", "/entry/%s".format(entry.name), "href"))
       })
   }
 
@@ -61,7 +80,8 @@ class FunctionalDictionary {
       "list" -> entries.flatMap { entry =>
         bind("result", chooseTemplate("results", "list", xhtml),
           "name" -> entry.name,
-          "description" -> entry.description)
+          "description" -> entry.description.text,
+          AttrBindParam("link", "/entry/%s".format(entry.name), "href"))
       })
   }
 
