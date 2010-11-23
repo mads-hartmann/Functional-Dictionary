@@ -2,6 +2,7 @@ package bootstrap.liftweb
 import _root_.net.liftweb.http.{ LiftRules }
 import _root_.net.liftweb.sitemap.{ SiteMap, Menu, Loc }
 import _root_.net.liftweb.http._
+import com.sidewayscoding.comet.{ EntryName }
 
 class Boot {
   def boot {
@@ -9,10 +10,12 @@ class Boot {
     // where to search snippet
     LiftRules.addToPackages("com.sidewayscoding")
 
-    LiftRules.statelessRewrite.append {
+    LiftRules.statefulRewrite.append {
       case RewriteRequest( 
-        ParsePath("entry" :: name :: Nil, _, _, _), _, _) =>
-        RewriteResponse("entry" :: Nil, Map("name" -> name))
+        ParsePath("entry" :: name :: Nil, _, _, _), _, _) => {
+          EntryName.set(Some(name))
+          RewriteResponse("entry" :: Nil, Map("name" -> name))
+        }
     }
 
     // build sitemap
@@ -21,6 +24,7 @@ class Boot {
         Menu("Results") / "search" ::
         Menu("Entries") / "entries" ::
         Menu("Entry") / "entry" ::
+        Menu("test") / "test" ::
         Menu("Add") / "add" ::
         Nil
 

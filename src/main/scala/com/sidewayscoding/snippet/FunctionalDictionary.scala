@@ -1,6 +1,7 @@
 package com.sidewayscoding.snippet
 
 import com.sidewayscoding.model._
+import com.sidewayscoding.comet._
 import xml.{ Text, NodeSeq }
 import net.liftweb.http.{ RequestVar }
 import net.liftweb.util.Helpers._
@@ -30,7 +31,7 @@ class FunctionalDictionary {
   }
 
   def entries(xhtml: NodeSeq): NodeSeq = {
-    val all = Dictionary.findAll
+    val all = EntryServer.findAll
     val entryMap = all.groupBy { entry => entry.name.charAt(0).toUpperCase }
 
     bind("entries", xhtml,
@@ -40,26 +41,6 @@ class FunctionalDictionary {
         val nodeseq = chooseTemplate("entries", "letters", xhtml)
         bindLetter(letter, list, nodeseq)
       })
-  }
-
-  def entry(xhtml: NodeSeq): NodeSeq = {
-    (for (
-      name <- S.param("name");
-      entry <- Dictionary.find(name)
-    ) yield {
-      bind("entry", xhtml,
-        "name" -> entry.name,
-        "description" -> entry.description.text,
-        "descriptionCount" -> entry.descriptions.size,
-        "altDescriptions" -> entry.descriptions.flatMap { description =>
-          bind("altDescription", chooseTemplate("entry", "altDescriptions", xhtml),
-            "descriptionCount" -> description.rank.toString,
-            "description" -> description.text)
-        })
-    }) getOrElse {
-      S.error("Sorry, no entry found")
-      NodeSeq.Empty
-    }
   }
 
   private def bindLetter(letter: Char, list: List[Entry], xhtml: NodeSeq): NodeSeq = {
@@ -74,7 +55,7 @@ class FunctionalDictionary {
   }
 
   private def bindResults(query: String, xhtml: NodeSeq): NodeSeq = {
-    val entries = Dictionary.findAllLike(query)
+    val entries = EntryServer.findAllLike(query)
 
     bind("results", xhtml,
       "querySize" -> Text(entries.size.toString),

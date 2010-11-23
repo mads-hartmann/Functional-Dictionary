@@ -1,10 +1,12 @@
 package com.sidewayscoding.snippet
 
 import com.sidewayscoding.model._
+import com.sidewayscoding.comet._
 import xml.{ Text, NodeSeq }
 import net.liftweb.util.Helpers._
 import net.liftweb.http.{ S, RequestVar }
 import net.liftweb.http.S._
+import net.liftweb.util.Helpers
 import net.liftweb.http.SHtml._
 import net.liftweb.common._
 
@@ -18,9 +20,9 @@ class EntrySnippet {
       "name" -> text(name, str => name(str)),
       "description" -> textarea(description, str => description(str)),
       "submit" -> submit("Save entry", () => {
-        val desc = Description(description, 0)
+        val desc = Description(description, 0, Helpers.nextFuncName)
         val e = Entry(name, desc :: Nil)
-        Dictionary.add(e)
+        EntryServer ! AddMessage(e)
         S.notice("Horray! The dictionary just grew bigger")
         redirectTo("/")
       }))
