@@ -1,19 +1,15 @@
 package com.sidewayscoding.comet
 
-import net.liftweb._
-import http._
-import SHtml._
-import net.liftweb.common.{ Box, Full, Empty }
-import net.liftweb.util._
-import net.liftweb.actor._
-import net.liftweb.util.Helpers._
-import js._
-import JsCmds._
-import net.liftweb.http.js.JsCmds._
-import net.liftweb.http.js.JE.Str
-import com.sidewayscoding.model._
 import com.sidewayscoding.comet._
-import scala.xml.{ NodeSeq, Text }
+import com.sidewayscoding.model._
+import net.liftweb.actor._
+import net.liftweb.common.{ Box, Full, Empty }
+import net.liftweb.http._
+import net.liftweb.http.SHtml._
+import net.liftweb.http.js.JsCmds._
+import net.liftweb.util._
+import net.liftweb.util.Helpers._
+import scala.xml.{ Text }
 
 // CometActors live outside the scope of an HTTP request. Because of this 
 // this SessionVar is being set in boot in a statefull rewrite request
@@ -26,7 +22,7 @@ class EntryComet extends CometActor with CometListener {
   override def defaultPrefix = Full("entry")
 
   // The ListenerManager that it's listening on 
-  def registerWith = EntryServer    
+  def registerWith = EntryServer
 
   // Intial bindings 
   def render = {
@@ -57,11 +53,11 @@ class EntryComet extends CometActor with CometListener {
   override def lowPriority = {
     case list: List[Entry] => reRender(false)
   }
-  
+
   private def vote(entry: Entry, description: Description, vote: Vote.Value) = {
     EntryServer ! VoteMessage(entry, description, vote)
     Noop
   }
-  
+
 }
 
