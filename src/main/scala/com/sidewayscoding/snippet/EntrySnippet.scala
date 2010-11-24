@@ -20,8 +20,8 @@ class EntrySnippet {
       "name" -> text(name, str => name(str)),
       "description" -> textarea(description, str => description(str)),
       "submit" -> submit("Save entry", () => {
-        val desc = Description(description, 0, Helpers.nextFuncName)
-        val e = Entry(name, desc :: Nil)
+        val desc = Description(description, Helpers.nextFuncName)
+        val e = Entry(name, List(desc))
         EntryServer ! AddMessage(e)
         S.notice("Horray! The dictionary just grew bigger")
         redirectTo("/")

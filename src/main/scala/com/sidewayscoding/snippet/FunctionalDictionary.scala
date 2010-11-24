@@ -32,7 +32,7 @@ class FunctionalDictionary {
 
   def entries(xhtml: NodeSeq): NodeSeq = {
     val all = EntryServer.findAll
-    val entryMap = all.groupBy { entry => entry.name.charAt(0).toUpperCase }
+    val entryMap = all.groupBy { entry => entry.name.charAt(0).toUpper }
 
     bind("entries", xhtml,
       "size" -> all.size.toString,
