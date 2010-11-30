@@ -1,10 +1,12 @@
-<lift:FunctionalDictionary form="GET">
+<div class="lift:FunctionalDictionary.render?form=get">
+
   <div id="search_container">
-    <dictionary:search id="search" placeholder="Search..." />
-    <dictionary:submit id="submit" />
+	<input id="search" placeholder="search..." />
+	<input id="submit" type="submit" />
   </div> 
   <p class="menu">
         See a list of all <a href="/entries"><lift:comet type='EntryCounter'/> entries</a>. 
         See something missing? <a href="/add">Add an entry</a>
   </p>
-</lift:FunctionalDictionary>
+
+</div>

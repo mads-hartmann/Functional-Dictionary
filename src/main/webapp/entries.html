@@ -1,26 +1,17 @@
-<lift:surround with="default" at="content">
-
-  <lift:FunctionalDictionary.entries>
-      
-      <p> There are currently <entries:size /> entries in the functional dictionary</p>
-      <entries:letters>
-          
-          <h2>
-              <letter:letter />
-          </h2>
-          
-          <ul>
-              <letter:list>
-              <li>  
-                  <h3><a entry:link=""><entry:name /></a></h3>
-                  <p><entry:description /></p>
-              </li>
-              </letter:list>
-          </ul>
-          
-      </entries:letters>
-      
-  </lift:FunctionalDictionary.entries>
-	
-
-</lift:surround>
+<div class="lift:surround?with=default;at=content">
+    <div class="lift:FunctionalDictionary.entries">
+        <p class="menu">
+            See a list of all <a href="/entries"><lift:comet type='EntryCounter'/> entries</a>. 
+            See something missing? <a href="/add">Add an entry</a>
+        </p>
+        <div class="letter-result">
+            <h2 class="letter"></h2>
+            <ul>
+                <li class="item">
+                    <h3><a class="link" href=""><span class="name"></span></a></h3>
+                    <p class="description">description</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -14,57 +14,42 @@ class FunctionalDictionary {
 
   object word extends RequestVar("")
 
-  def render(xhtml: NodeSeq): NodeSeq =
-    bind("dictionary", xhtml,
-      "search" -%> text(word.is, s => word(s)),
-      "submit" -%> submit("", () => {
-        redirectTo("/search?query=" + word)
-      }))
+  def render =
+    "#search" #> text(word.is, s => word(s)) &
+    "#submit" #> submit("", () => {
+      redirectTo("/search?query=" + word)
+    })
 
-  def results(xhtml: NodeSeq): NodeSeq = {
+  def results = {
     (for (query <- S.param("query")) yield {
-      bindResults(query, xhtml)
+      bindResults(query)
     }) getOrElse {
       S.error("Please supply a query")
       redirectTo("/")
     }
   }
 
-  def entries(xhtml: NodeSeq): NodeSeq = {
+  def entries = {
     val all = EntryServer.findAll
     val entryMap = all.groupBy { entry => entry.name.charAt(0).toUpper }
-
-    bind("entries", xhtml,
-      "size" -> all.size.toString,
-      "letters" -> entryMap.keys.toList.flatMap { letter =>
-        val list = entryMap.getOrElse(letter, Nil)
-        val nodeseq = chooseTemplate("entries", "letters", xhtml)
-        bindLetter(letter, list, nodeseq)
-      })
+    
+    ".letter-result" #> entryMap.keys.toList.map { letter =>
+      val entries = entryMap.getOrElse(letter, Nil)
+      ".letter *" #> letter.toString &
+      ".item" #> entries.map { bindEntry _ }
+    }
   }
 
-  private def bindLetter(letter: Char, list: List[Entry], xhtml: NodeSeq): NodeSeq = {
-    bind("letter", xhtml,
-      "letter" -> letter.toString,
-      "list" -> list.flatMap { entry =>
-        bind("entry", chooseTemplate("letter", "list", xhtml),
-          "name" -> entry.name,
-          "description" -> entry.description.text,
-          AttrBindParam("link", "/entry/%s".format(entry.name), "href"))
-      })
-  }
-
-  private def bindResults(query: String, xhtml: NodeSeq): NodeSeq = {
+  private def bindResults(query: String) = {
     val entries = EntryServer.findAllLike(query)
-
-    bind("results", xhtml,
-      "querySize" -> Text(entries.size.toString),
-      "list" -> entries.flatMap { entry =>
-        bind("result", chooseTemplate("results", "list", xhtml),
-          "name" -> entry.name,
-          "description" -> entry.description.text,
-          AttrBindParam("link", "/entry/%s".format(entry.name), "href"))
-      })
+    
+    "#count" #> entries.size.toString &
+    ".result" #> entries.map { bindEntry _ }
   }
-
+  
+  private def bindEntry(entry: Entry) = 
+    ".name" #> entry.name &
+    ".description" #> entry.description.text & 
+    ".link [href]" #> "/entry/%s".format(entry.name)
+  
 }

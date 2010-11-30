@@ -1,17 +1,15 @@
-<lift:surround with="default" at="content">
+<div class="lift:surround?with=default;at=content">
 
     <lift:embed what="search_form" />
 
-    <lift:FunctionalDictionary.results>
-	    <p class="info">Found <results:querySize /> matches to your criteria</p>
-	    <ul class="results">
-	        <results:list>
-	        <li>
-	           <h2><a result:link=""><result:name /></a> </h2>
-	           <p><result:description /></p>
-	        </li>
-	        </results:list>
-	    </ul>
-    </lift:FunctionalDictionary.results>
+    <div class="lift:FunctionalDictionary.results">
+        <p class="info">Found <span id="count">0</span> matches to your criteria</p>
+        <ul class="results">
+            <li class="result">
+               <h2><a class="link" href=""><span class="name"></span></a></h2>
+               <p class="description">description</p>
+            </li>
+        </ul>
+    </div>
     
-</lift:surround>
+</div>
