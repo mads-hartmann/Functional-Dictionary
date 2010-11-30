@@ -1,19 +1,17 @@
-<lift:surround with="default" at="content">
-  
-	<lift:EntrySnippet.create form="POST">
-	    <ul id="create_form">
-	        <li>
-	            <label>Name</label>
-        	    <entry:name />
+<div class="lift:surround?with=default;at=content">
+	<div class="lift:EntrySnippet.create?form=post">
+		<ul id="create_form">
+			<li>
+				<label>Name</label>
+				<input id="name" />
+			</li>
+			<li>
+				<label>Description</label>
+	    	    <textarea id="description"></textarea>
+			</li>
+			<li>
+	            <input type="submit" value="submit"/>
 	        </li>
-	        <li>
-	            <label>Description</label>
-        	    <entry:description />
-	        </li>
-	        <li>
-	            <entry:submit />
-	        </li>
-	    </ul>
-	</lift:EntrySnippet.create>
-
-</lift:surround>
+		</ul>
+	</div>
+</div>
