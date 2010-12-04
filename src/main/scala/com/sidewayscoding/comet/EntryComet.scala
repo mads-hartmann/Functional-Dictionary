@@ -9,7 +9,7 @@ import net.liftweb.http.SHtml._
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.util._
 import net.liftweb.util.Helpers._
-import scala.xml.{ Text }
+import scala.xml.{ Text, NodeSeq }
 
 // CometActors live outside the scope of an HTTP request. Because of this 
 // this SessionVar is being set in boot in a statefull rewrite request
@@ -26,28 +26,24 @@ class EntryComet extends CometActor with CometListener {
 
   // Intial bindings 
   def render = {
-    (for (
+    val ifFound = for (
       name <- EntryName.get;
       entry <- EntryServer.find(name)
     ) yield {
-      val xml = bind(
-        "name" -> entry.name,
-        "description" -> entry.description.text,
-        "rank" -> entry.description.rank.toString,
-        "voteUp" -> a(() => vote(entry, entry.description, Vote.UP), Text("up")),
-        "voteDown" -> a(() => vote(entry, entry.description, Vote.DOWN), Text("down")),
-        "altDescriptions" -> entry.sortedDescriptions.flatMap { description =>
-          bind("altDescription", chooseTemplate(defaultPrefix.get, "altDescriptions", defaultXml),
-            "rank" -> description.rank.toString,
-            "description" -> description.text,
-            "voteUp" -> a(() => vote(entry, description, Vote.UP), Text("up")),
-            "voteDown" -> a(() => vote(entry, description, Vote.DOWN), Text("down")))
-        })
-      RenderOut(xml, Empty, Empty, Empty, false)
-    }).getOrElse {
-      S.error("Sorry, no entry found")
-      RenderOut(Empty, Empty, Empty, Empty, false)
+      ".title" #> entry.name &
+      ".description" #> entry.description.text & 
+      ".rank" #> entry.description.rank.toString & 
+      ".up" #> a(() => vote(entry, entry.description, Vote.UP), Text("up")) &
+      ".down" #> a(() => vote(entry, entry.description, Vote.DOWN), Text("down")) &
+      ".alternative" #> (entry.sortedDescriptions.map { altDescription => 
+        ".alt-description" #> altDescription.text & 
+        ".alt-rank" #> altDescription.rank.toString & 
+        ".alt-up" #> a(() => vote(entry, altDescription, Vote.UP), Text("up")) &
+        ".alt-down" #> a(() => vote(entry, altDescription, Vote.DOWN), Text("down"))
+      }) 
     }
+    
+    ifFound.getOrElse(".wrapper" #> NodeSeq.Empty)
   }
 
   override def lowPriority = {
