@@ -15,7 +15,8 @@ class EntryCounter extends CometActor with CometListener {
   def registerWith = EntryServer
 
   override def lowPriority = {
-    case list: List[Entry] => couter = list.size; reRender(true)
+    case EntryTable(m) => couter = m.size; reRender()
+    case (EntryTable(m), _) => couter = m.size; reRender()
   }
 
 }

@@ -1,29 +1,27 @@
-package com.sidewayscoding.snippet
+package com.sidewayscoding
+package snippet
 
-import com.sidewayscoding.model._
-import com.sidewayscoding.comet._
-import xml.{ Text, NodeSeq }
-import net.liftweb.util.Helpers._
-import net.liftweb.http.{ S, RequestVar }
-import net.liftweb.http.S._
-import net.liftweb.util.Helpers
-import net.liftweb.http.SHtml._
-import net.liftweb.common._
+import model._
+import comet._
 
-class EntrySnippet {
+import net.liftweb._
+import http._
+import SHtml._
+import util._
+import Helpers._
 
-  object name extends RequestVar[String]("")
-  object description extends RequestVar[String]("")
-
+object EntrySnippet {
   def create = {
-    "#name" #> text(name, str => name(str)) &
-    "#description" #> textarea(description, str => description(str)) &
-    "type=submit" #> submit("Save entry", () => {
-      val desc = Description(description, Helpers.nextFuncName)
-      val e = Entry(name, List(desc))
-      EntryServer ! AddMessage(e)
+    val name = ValueCell("")
+    val desc = ValueCell("")
+    val whence = S.referer openOr "/"
+
+    "#name" #> textElem(name) &
+    "#description" #> textareaElem(desc) &
+    "type=submit" #> onSubmitUnit(() => {
+      EntryServer ! AddMessage(Entry(name.get, List(Description(desc.get))))
       S.notice("Horray! The dictionary just grew bigger")
-      redirectTo("/")
+      S.redirectTo(whence)
     })
   }
 }

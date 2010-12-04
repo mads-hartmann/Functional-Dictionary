@@ -1,25 +1,25 @@
 <lift:surround with="default" at="content">
+  <lift:MakeComet> 
+    <div class="wrapper">
+      <h2 class="title">Title</h2>
+      <p class="description"><span class="rank">0:</span> </p>
+      <ul>
+	<li class="up"></li>
+	<li class="down"></li>
+      </ul>
+      
+      <ul id="alternatives">
+	<li>
+	  <p class="alt-description"></p>
+	  Rank: <span>Rank</span>
+	  <ul>
+	    <li class="alt-up"></li>
+	    <li class="alt-down"></li>
+	  </ul>
+	</li>
+      </ul>
 
-	<lift:comet type='EntryComet'> 
-		<div class="wrapper">
-			<h2 class="title"></h2>
-			<p class="description"><span class="rank">0:</span> </p>
-			<ul>
-				<li class="up"></li>
-				<li class="down"></li>
-			</ul>
-
-			<ul class="alternatives">
-				<li class="alternative">
-					<span class="alt-rank"></span>
-					<p class="alt-description"></p>
-					<ul>
-						<li class="alt-up"></li>
-						<li class="altdown"></li>
-					</ul>
-				</li>
-			</ul>
-		</div>
-	</lift:comet>	
+    </div>
+  </lift:MakeComet>	
 
 </lift:surround>

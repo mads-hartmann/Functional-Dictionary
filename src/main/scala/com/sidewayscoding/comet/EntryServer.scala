@@ -3,7 +3,6 @@ package com.sidewayscoding.comet
 import net.liftweb._
 import net.liftweb.actor._
 import net.liftweb.http._
-import scala.collection.mutable.{ HashMap }
 import com.sidewayscoding.model._
 
 // The messages that the actor can recieve 
@@ -18,40 +17,35 @@ object Vote extends Enumeration {
 
 object EntryServer extends LiftActor with ListenerManager {
 
-  private val entries = HashMap[String, Entry]()
+  @volatile private var entries = EntryTable()
 
-  def createUpdate = findAll
+  def createUpdate = entries
 
   override def lowPriority = {
-    case AddMessage(entry) => add(entry); updateListeners()
-    case VoteMessage(entry, description, v) => vote(entry, description, v); updateListeners()
-  }
+    case AddMessage(entry) => {
+      entries = entries.add(entry)
+      updateListeners(entries -> entry.name)
+    }
 
-  private def add(entry: Entry) = {
-    if (entries.contains(entry.name)) {
-      val old = entries.get(entry.name).get // we already checked        
-      val updatedEntry = old.copy(old.name, old.descriptions ::: entry.descriptions)
-      entries.update(old.name, updatedEntry)
-    } else {
-      entries.put(entry.name, entry)
+    case VoteMessage(entry, description, v) => {
+      entries = entries.update(entry) {
+        _.update(description.id) {
+          d => d.copy(rank = d.rank + (v match {
+            case Vote.UP => 1
+            case Vote.DOWN => -1
+          }))
+        }
+      }
+
+      updateListeners(entries -> entry.name)
     }
   }
 
-  private def vote(entry: Entry, description: Description, vote: Vote.Value) = {
-    vote match {
-      case Vote.UP => description.rank = description.rank + 1
-      case Vote.DOWN => description.rank = description.rank - 1
-    }
-    entries.update(entry.name, entry)
-  }
-
-  // reading related method - It's okay. we're just reading. 
-
-  def find(name: String) = entries.get(name)
-
-  def findAll = entries.values.toList
-
-  def findAllLike(str: String) =
-    entries.values.toList.filter(_.name.toLowerCase.contains(str.toLowerCase))
-
+  /**
+   * In general, it's bad to mix concurrency paradigms,
+   * but becasue the entries is an immutable data
+   * structure and it's in a volatile var, we can access
+   * it outside the Actor thread
+   */
+  def findAll: List[Entry] = entries.entries.values.toList
 }

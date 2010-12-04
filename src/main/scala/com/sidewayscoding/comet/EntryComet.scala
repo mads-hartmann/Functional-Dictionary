@@ -11,47 +11,55 @@ import net.liftweb.util._
 import net.liftweb.util.Helpers._
 import scala.xml.{ Text, NodeSeq }
 
-// CometActors live outside the scope of an HTTP request. Because of this 
-// this SessionVar is being set in boot in a statefull rewrite request
-// so the comet actor knows which entry to display. 
-object EntryName extends SessionVar[Option[String]](None)
-
 class EntryComet extends CometActor with CometListener {
-
-  // The following specifies a default prefix
-  override def defaultPrefix = Full("entry")
-
   // The ListenerManager that it's listening on 
   def registerWith = EntryServer
 
+  private var entry: Box[Entry] = Empty
+
   // Intial bindings 
-  def render = {
-    val ifFound = for (
-      name <- EntryName.get;
-      entry <- EntryServer.find(name)
-    ) yield {
-      ".title" #> entry.name &
-      ".description" #> entry.description.text & 
-      ".rank" #> entry.description.rank.toString & 
-      ".up" #> a(() => vote(entry, entry.description, Vote.UP), Text("up")) &
-      ".down" #> a(() => vote(entry, entry.description, Vote.DOWN), Text("down")) &
-      ".alternative" #> (entry.sortedDescriptions.map { altDescription => 
-        ".alt-description" #> altDescription.text & 
-        ".alt-rank" #> altDescription.rank.toString & 
-        ".alt-up" #> a(() => vote(entry, altDescription, Vote.UP), Text("up")) &
-        ".alt-down" #> a(() => vote(entry, altDescription, Vote.DOWN), Text("down"))
-      }) 
+  def render =
+    this.entry match {
+      case Full(entry) => {
+        ".title" #> entry.name &
+        ".description" #> entry.description.text & 
+        ".rank" #> entry.description.rank.toString & 
+        ".up" #> a(() => vote(entry.description, Vote.UP),
+                   Text("up")) &
+        ".down" #> a(() => vote(entry.description,
+                                Vote.DOWN), Text("down")) &
+        "#alternatives" #> (
+          "li *" #> entry.descriptionTail.map (
+            d => {
+              "span *" #> d.rank.toString &
+              "p *" #> d.text &
+              ".alt-up *" #> a(() => vote(d, Vote.UP), 
+                               Text("up")) &
+              ".alt-down *" #> a(() => vote(d, Vote.DOWN), 
+                                 Text("down"))
+            }
+            )
+          )
+      }
+
+      case _ => ".wrapper" #> NodeSeq.Empty
     }
-    
-    ifFound.getOrElse(".wrapper" #> NodeSeq.Empty)
-  }
+
 
   override def lowPriority = {
-    case list: List[Entry] => reRender(false)
+    case EntryTable(m) => entry = name.flatMap(m.get); reRender()
+
+    case (EntryTable(m), entName: String) if Full(entName) == name =>
+      entry = m.get(entName); reRender()
   }
 
-  private def vote(entry: Entry, description: Description, vote: Vote.Value) = {
-    EntryServer ! VoteMessage(entry, description, vote)
+  private def vote(description: Description, vote: Vote.Value) = {
+    entry.foreach {
+      e => {
+        EntryServer ! VoteMessage(e, description, vote)
+      }
+    }
+
     Noop
   }
 

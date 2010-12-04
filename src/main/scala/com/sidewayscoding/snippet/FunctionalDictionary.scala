@@ -12,13 +12,13 @@ import net.liftweb.common._
 
 class FunctionalDictionary {
 
-  object word extends RequestVar("")
-
-  def render =
-    "#search" #> text(word.is, s => word(s)) &
-    "#submit" #> submit("", () => {
-      redirectTo("/search?query=" + word)
+  def render = {
+    var word = ""
+    "#search" #> text(word, word = _) &
+    "#submit" #> onSubmitUnit(() => {
+      redirectTo("/search?query=" + urlEncode(word))
     })
+  }
 
   def results = {
     (for (query <- S.param("query")) yield {
@@ -41,15 +41,18 @@ class FunctionalDictionary {
   }
 
   private def bindResults(query: String) = {
-    val entries = EntryServer.findAllLike(query)
+    val entries = 
+      EntryServer.findAll.filter(_.name.toLowerCase.
+                                 contains(query.toLowerCase))
     
     "#count" #> entries.size.toString &
     ".result" #> entries.map { bindEntry _ }
   }
   
-  private def bindEntry(entry: Entry) = 
+  private def bindEntry(entry: Entry) = {
     ".name" #> entry.name &
     ".description" #> entry.description.text & 
-    ".link [href]" #> "/entry/%s".format(entry.name)
+    ".link [href]" #> "/entry/%s".format(urlEncode(entry.name))
+  }
   
 }
