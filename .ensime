@@ -1,0 +1,4 @@
+;
+(:project-package "com.sidewayscoding" 
+ :use-sbt t 
+ :root-dir "/Users/Mads/dev/projects/functional_dictionary/")
