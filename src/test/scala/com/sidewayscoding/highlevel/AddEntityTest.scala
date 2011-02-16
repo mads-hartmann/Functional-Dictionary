@@ -1,6 +1,5 @@
 package test.scala.com.sidewayscoding.highlevel
 
-
 import org.scalatest.{ FunSuite, SuperSuite, BeforeAndAfterAll}
 import org.mortbay.jetty.{ Connector, Server}
 import org.mortbay.jetty.webapp.{ WebAppContext }
@@ -64,17 +63,17 @@ class AddEntityTest extends FunSuite with BeforeAndAfterAll {
     assert(selenium.isTextPresent("Found 0 matches to your criteria"), true)
   }
 
-  test("""Test that you can create an entry and it will increment 
+  test("""Test that you can create an entry and it will increment
           counter and show up in search results""") {
     selenium.open("/")
-		selenium.click("//x:a[contains(@href, '/add')]")
-		selenium.waitForPageToLoad("30000")
-		selenium.`type`("name", "MyEntry")
-		selenium.`type`("description", "My cute little addition to this dictionary")
-		selenium.click("EntrySubmissionButton")
-		selenium.waitForPageToLoad("30000")
-		assert(selenium.isTextPresent("Horray! The dictionary just grew bigger"), true)
-		assert(selenium.isTextPresent("1 // // entries"), true)
+    selenium.click("//x:a[contains(@href, '/add')]")
+    selenium.waitForPageToLoad("30000")
+    selenium.`type`("name", "MyEntry")
+    selenium.`type`("description", "My cute little addition to this dictionary")
+    selenium.click("EntrySubmissionButton")
+    selenium.waitForPageToLoad("30000")
+    assert(selenium.isTextPresent("Horray! The dictionary just grew bigger"), true)
+    assert(selenium.isTextPresent("1 // // entries"), true)
 
     selenium.open("/")
     selenium.`type`("search", "MyEntry")
