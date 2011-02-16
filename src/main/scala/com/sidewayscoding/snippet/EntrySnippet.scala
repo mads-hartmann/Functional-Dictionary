@@ -22,6 +22,7 @@ object EntrySnippet {
       EntryServer ! AddMessage(Entry(name.get, List(Description(desc.get))))
       S.notice("Horray! The dictionary just grew bigger")
       S.redirectTo(whence)
-    })
+    }) &
+    "type=submit [id]" #> "EntrySubmissionButton"
   }
 }

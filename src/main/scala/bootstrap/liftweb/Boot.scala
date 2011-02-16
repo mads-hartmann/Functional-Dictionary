@@ -1,7 +1,6 @@
 package bootstrap.liftweb
-import _root_.net.liftweb.http.{ LiftRules }
-import _root_.net.liftweb.sitemap.{ SiteMap, Menu, Loc }
 import _root_.net.liftweb.http._
+import _root_.net.liftweb.sitemap.{ SiteMap, Menu, Loc }
 
 class Boot {
   def boot {

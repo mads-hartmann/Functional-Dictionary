@@ -1,6 +1,5 @@
 syntax: glob
 .DS_Store
-.ensime
 lib_managed/
 lift_proto.db.h2.db
 tags
