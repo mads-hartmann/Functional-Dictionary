@@ -55,32 +55,30 @@ class AddEntityTest extends FunSuite with BeforeAndAfterAll {
     seleniumserver.stop()
   }
 
-  test("Test that searching doesn't show anything when empty") {
+  test("Test that searching for an entity that doesn't exist doesn't show anything") {
     selenium.open("/")
-    selenium.`type`("search",entry.name )
+    selenium.`type`("search","asdfghjkwertyuisdfghjxcvb" )
     selenium.click("submit")
     selenium.waitForPageToLoad("30000")
     assert(selenium.isTextPresent("Found 0 matches to your criteria"), true)
   }
 
-  test("""Test that you can create an entry and it will increment
-          counter and show up in search results""") {
+  test("Test that you can create an entry and it will show up in search results") {
     selenium.open("/")
     selenium.click("//x:a[contains(@href, '/add')]")
     selenium.waitForPageToLoad("30000")
-    selenium.`type`("name", "MyEntry")
-    selenium.`type`("description", "My cute little addition to this dictionary")
+    selenium.`type`("name", entry.name)
+    selenium.`type`("description", entry.description.text)
     selenium.click("EntrySubmissionButton")
     selenium.waitForPageToLoad("30000")
     assert(selenium.isTextPresent("Horray! The dictionary just grew bigger"), true)
-    assert(selenium.isTextPresent("1 // // entries"), true)
 
     selenium.open("/")
-    selenium.`type`("search", "MyEntry")
+    selenium.`type`("search", entry.name)
     selenium.click("submit")
     selenium.waitForPageToLoad("30000")
     assert(selenium.isTextPresent("Found 1 matches to your criteria"), true)
-    assert(selenium.isTextPresent("MyEntry"), true)
-    assert(selenium.isTextPresent("MyEntry My cute little addition to this dictionary"), true)
+    assert(selenium.isTextPresent(entry.name), true)
+    assert(selenium.isTextPresent(entry.description.text), true)
   }
 }
