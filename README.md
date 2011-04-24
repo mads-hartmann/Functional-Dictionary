@@ -9,10 +9,12 @@ For more information about Lift look [here](http://www.liftweb.net/ "here).
 
 ## Info
 
+These are the folder you probably want to look at:
+
 * [src/main/webapp](https://github.com/mads379/Functional-Dictionary/tree/master/src/main/webapp "src/main/webapp") contains the templates
 * [src/main/scala/com/sidewayscoding](https://github.com/mads379/Functional-Dictionary/tree/master/src/main/scala/com/sidewayscoding "src/main/scala/com/sidewayscoding") contains the Scala code
 
-Here are some classes you might want to look at:
+Here are some scala files you might want to look at:
 
 * [Boot](https://github.com/mads379/Functional-Dictionary/blob/master/src/main/scala/bootstrap/liftweb/Boot.scala "Boot") is the class that Lift runs upon booting your application. It defines the menu structure and other configuration related stuff.
 * [EntryServer](https://github.com/mads379/Functional-Dictionary/blob/master/src/main/scala/com/sidewayscoding/comet/EntryServer.scala "EntryServer) is the class which stores all of the entries in the dictionary. It simply stores the entries in the RAM to simplify the example.
@@ -23,8 +25,7 @@ Here are some classes you might want to look at:
 
 You need to have [SBT](http://code.google.com/p/simple-build-tool/ "SBT") 0.7.x installed. Then simply run
 
-<pre><code>
-> git clone git://github.com/mads379/Functional-Dictionary.git functional-dictionary
+<pre><code>> git clone git://github.com/mads379/Functional-Dictionary.git functional-dictionary
 > cd functional-dictionary
 > sbt
 > update
