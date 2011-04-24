@@ -6,6 +6,13 @@ import net.liftweb.actor._
 import net.liftweb.http._
 import scala.xml.{ Text }
 
+/*
+ * This is the CometActor that displays the total number of entries in the dictionary. It's a comet
+ * actor because we want to update the number dynamically on all pages if another user adds a new
+ * entry.
+ *
+ * For more information about Comet: http://simply.liftweb.net/index-7.13.html#toc-Section-7.13
+ */
 class EntryCounter extends CometActor with CometListener {
 
   private var couter = 0

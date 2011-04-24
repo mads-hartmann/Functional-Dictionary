@@ -11,11 +11,23 @@ import net.liftweb.util._
 import net.liftweb.util.Helpers._
 import scala.xml.{ Text, NodeSeq }
 
+/*
+ * This is the CometActor that takes care of display a single entry. It's a comet actor because
+ * we want the page to dynamically update when other users add description or vote on the
+ * existing ones.
+ *
+ * For more information about Comet: http://simply.liftweb.net/index-7.13.html#toc-Section-7.13
+ */
 class EntryComet extends CometActor with CometListener {
+
   // The ListenerManager that it's listening on
   def registerWith = EntryServer
 
   private var entry: Box[Entry] = Empty
+
+  /* The render method uses CSS Selector Transforms to bind content to the template:
+   * http://simply.liftweb.net/index-7.10.html#sec:CSS-Selector-Transforms
+   */
 
   // Intial bindings
   def render =

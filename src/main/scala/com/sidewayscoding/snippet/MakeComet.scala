@@ -5,15 +5,19 @@ import net.liftweb._
 import http._
 import common._
 
+import com.sidewayscoding.model.EntryNameParam
+
 import scala.xml.NodeSeq
 
-object MakeComet {
-  def render(in: NodeSeq): NodeSeq = {
-    val whence = S.referer openOr "/"
+/*
+ * This is simply a snippet that injects the XML needed to create a named Comet component.
+ *
+ * For more information about Comet: http://simply.liftweb.net/index-7.13.html#toc-Section-7.13
+ * For more information about snippets that take url parameters: http://simply.liftweb.net/index-3.4.html#sub:Param-Example
+ */
+class MakeComet(entryName: EntryNameParam) {
 
-    S.param("name") match {
-      case Full(name) => <lift:comet type="EntryComet" name={name}>{in}</lift:comet>
-      case _ => S.error("No Name"); S.redirectTo(whence)
-    }
-  }
+  def render(in: NodeSeq): NodeSeq =
+   <lift:comet type="EntryComet" name={entryName.name}>{in}</lift:comet>
+
 }

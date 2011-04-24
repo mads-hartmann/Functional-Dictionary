@@ -10,8 +10,21 @@ import net.liftweb.http.S._
 import net.liftweb.http.SHtml._
 import net.liftweb.common._
 
+/*
+ * This is the snippet that takes care of display the search results and the full list of entries
+ *
+ * For more information about snippets: http://simply.liftweb.net/index-3.4.html#toc-Section-3.4
+ */
 class FunctionalDictionary {
 
+  /* This snippet uses CSS Selector Transforms to bind the xml to content. See:
+   * http://simply.liftweb.net/index-7.10.html#sec:CSS-Selector-Transforms
+   */
+
+  /* This is the search form:
+   *
+   * For more information about forms in lift: http://simply.liftweb.net/index-Chapter-4.html#toc-Chapter-4
+   */
   def render = {
     var word = ""
     "#search" #> text(word, word = _) &

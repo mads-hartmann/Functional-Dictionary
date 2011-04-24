@@ -5,8 +5,7 @@ import net.liftweb.actor._
 import net.liftweb.http._
 import com.sidewayscoding.model._
 
-// The messages that the actor can recieve 
-
+// The messages that the actor can recieve
 case class AddMessage(entry: Entry)
 case class VoteMessage(entry: Entry, description: Description, vote: Vote.Value)
 
@@ -15,6 +14,13 @@ object Vote extends Enumeration {
   val UP, DOWN = Value
 }
 
+/*
+ * This is the Comet server that takes care of storing all of the entries and pushing
+ * updates to all ofthe comet components who register with it.
+ *
+ * For more information about Comet: http://simply.liftweb.net/index-7.13.html#toc-Section-7.13
+ * For more information about LiftActor: http://simply.liftweb.net/index-7.14.html#toc-Section-7.14
+ */
 object EntryServer extends LiftActor with ListenerManager {
 
   @volatile private var entries = EntryTable()

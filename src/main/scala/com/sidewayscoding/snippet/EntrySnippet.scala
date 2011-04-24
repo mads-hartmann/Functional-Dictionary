@@ -12,8 +12,17 @@ import Helpers._
 
 import com.sidewayscoding.model.EntryNameParam
 
+/*
+ * This is the snippet that takes crares of displaying and processing the data for en entry
+ * submission form.
+ *
+ * For more information about snippets: http://simply.liftweb.net/index-3.4.html#toc-Section-3.4
+ * For more information about forms in lift: http://simply.liftweb.net/index-Chapter-4.html#toc-Chapter-4
+ * For more information about snippets that take url parameters: http://simply.liftweb.net/index-3.4.html#sub:Param-Example
+ */
 class EntrySnippet(entryName: EntryNameParam) {
 
+  /* For more information about RequestVar: http://simply.liftweb.net/index-4.4.html#toc-Section-4.4 */
   object nameStr extends RequestVar(entryName.name)
   object descStr extends RequestVar("")
 
@@ -22,6 +31,7 @@ class EntrySnippet(entryName: EntryNameParam) {
     val desc = ValueCell(descStr.is)
     val whence = S.referer openOr "/"
 
+    /* CSS Selector Transforms: http://simply.liftweb.net/index-7.10.html#sec:CSS-Selector-Transforms */
     "#name" #> textElem(name) &
     "#description" #> textareaElem(desc) &
     "type=submit" #> onSubmitUnit(() => {

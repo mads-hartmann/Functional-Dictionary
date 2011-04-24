@@ -3,8 +3,12 @@ package com.sidewayscoding.model
 import net.liftweb._
 import util._
 
+/*
+ * The case classes that are used to model a dictionary. Nothing Lift specific about this
+ */
+
 final case class Description(text: String, id: String = Helpers.nextFuncName, rank: Int = 0) extends Ordered[Description] {
-  def compare(that: Description) = -(rank.compare(that.rank)) // Want it to be sorted descending. 
+  def compare(that: Description) = -(rank.compare(that.rank)) // Want it to be sorted descending.
   override def toString(): String = "(%s %s , %s)".format(text, id, rank.toString)
 }
 
@@ -24,8 +28,8 @@ final case class Entry(name: String, descriptions: List[Description] = Nil) exte
 }
 
 final case class EntryTable(entries: Map[String, Entry] = Map()) {
-  def add(entry: Entry): EntryTable = 
-    EntryTable(entries + (entry.name -> 
+  def add(entry: Entry): EntryTable =
+    EntryTable(entries + (entry.name ->
                           entry.merge(entries.
                                       getOrElse(entry.name,
                                                 Entry(entry.name)))))
