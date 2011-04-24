@@ -31,7 +31,8 @@ class EntryComet extends CometActor with CometListener {
         ".add [href]" #> ("/add/" + entry.name) &
         "#alternatives" #> (
           if (entry.descriptionTail.isEmpty)
-            "li" #> NodeSeq.Empty
+            "li" #> NodeSeq.Empty &
+            ".add [href]" #> ("/add/" + entry.name)
           else {
             ".no_alternatives" #> NodeSeq.Empty &
             "li *" #> entry.descriptionTail.map { d => {

@@ -84,6 +84,7 @@ p.info {
   padding: 8px;
   color: #cbb393;
   border-radius: 7px;
+  margin-top: 30px;
 }
 
 .content p {
@@ -107,11 +108,33 @@ h1 {
   color: #777;
 }
 
+h2.title {
+  padding-top: 15px;
+  border-top: 2px solid #DFF2FA;
+}
+
 h4 {
   color: #777;
   font-weight: bold;
   font-size: 12px;
   text-align: center;
+}
+
+#alternatives {
+  border-top: 2px solid #DFF2FA;
+}
+
+#alternatives h3 {
+  font-size: 16px;
+}
+
+#alternatives p {
+  font-size: 12px;
+}
+
+#alternatives .vote a {
+  font-size: 12px;
+  padding: 1px 4px;
 }
 
 /* footer */
