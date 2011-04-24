@@ -1,25 +1,28 @@
 <lift:surround with="default" at="content">
-  <lift:MakeComet> 
+  <lift:MakeComet>
     <div class="wrapper">
-      <h2 class="title">Title</h2>
-      <p class="description"><span class="rank">0:</span> </p>
-      <ul>
-	<li class="up"></li>
-	<li class="down"></li>
+      <p class="action">Vote on the descriptions or <a href="" class="add">add</a> your own</p>
+      <h2 class="title">Title goes here</h2>
+      <p class="description">Description goes here</p>
+      <p>Rank: <span class="rank">0</span></p>
+      <ul class="vote clearfix">
+	      <li class="up"></li>
+	      <li class="down"></li>
       </ul>
-      
-      <ul id="alternatives">
-	<li>
-	  <p class="alt-description"></p>
-	  Rank: <span>Rank</span>
-	  <ul>
-	    <li class="alt-up"></li>
-	    <li class="alt-down"></li>
-	  </ul>
-	</li>
-      </ul>
-
+      <div id="alternatives">
+        <h3>Alternative descriptions</h3>
+        <p class="no_alternatives">There are no alternative descriptions. Feel like <a href="" class="add">adding</a> one?</p>
+        <ul>
+	        <li>
+	          <p class="alt-description"></p>
+	          <p>Rank: <span>Rank</span></p>
+	          <ul class="vote clearfix">
+	            <li class="alt-up"></li>
+	            <li class="alt-down"></li>
+	          </ul>
+	        </li>
+        </ul>
+      </div>
     </div>
-  </lift:MakeComet>	
-
+  </lift:MakeComet>
 </lift:surround>

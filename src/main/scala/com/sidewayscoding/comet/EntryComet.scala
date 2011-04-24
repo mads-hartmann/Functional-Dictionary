@@ -12,34 +12,37 @@ import net.liftweb.util.Helpers._
 import scala.xml.{ Text, NodeSeq }
 
 class EntryComet extends CometActor with CometListener {
-  // The ListenerManager that it's listening on 
+  // The ListenerManager that it's listening on
   def registerWith = EntryServer
 
   private var entry: Box[Entry] = Empty
 
-  // Intial bindings 
+  // Intial bindings
   def render =
     this.entry match {
       case Full(entry) => {
-        ".title" #> entry.name &
-        ".description" #> entry.description.text & 
-        ".rank" #> entry.description.rank.toString & 
-        ".up" #> a(() => vote(entry.description, Vote.UP),
+        ".title *" #> entry.name &
+        ".description *" #> entry.description.text &
+        ".rank" #> entry.description.rank.toString &
+        ".up *" #> a(() => vote(entry.description, Vote.UP),
                    Text("up")) &
-        ".down" #> a(() => vote(entry.description,
+        ".down *" #> a(() => vote(entry.description,
                                 Vote.DOWN), Text("down")) &
+        ".add [href]" #> ("/add/" + entry.name) &
         "#alternatives" #> (
-          "li *" #> entry.descriptionTail.map (
-            d => {
-              "span *" #> d.rank.toString &
-              "p *" #> d.text &
-              ".alt-up *" #> a(() => vote(d, Vote.UP), 
-                               Text("up")) &
-              ".alt-down *" #> a(() => vote(d, Vote.DOWN), 
-                                 Text("down"))
-            }
-            )
-          )
+          if (entry.descriptionTail.isEmpty)
+            "li" #> NodeSeq.Empty
+          else {
+            ".no_alternatives" #> NodeSeq.Empty &
+            "li *" #> entry.descriptionTail.map { d => {
+                "span *" #> d.rank.toString &
+                ".alt-description *" #> d.text &
+                ".alt-up *" #> a(() => vote(d, Vote.UP),
+                                 Text("up")) &
+                ".alt-down *" #> a(() => vote(d, Vote.DOWN),
+                                   Text("down"))
+            }}
+          })
       }
 
       case _ => ".wrapper" #> NodeSeq.Empty

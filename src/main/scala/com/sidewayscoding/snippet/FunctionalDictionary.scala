@@ -32,7 +32,7 @@ class FunctionalDictionary {
   def entries = {
     val all = EntryServer.findAll
     val entryMap = all.groupBy { entry => entry.name.charAt(0).toUpper }
-    
+
     ".letter-result" #> entryMap.keys.toList.map { letter =>
       val entries = entryMap.getOrElse(letter, Nil)
       ".letter *" #> letter.toString &
@@ -41,18 +41,18 @@ class FunctionalDictionary {
   }
 
   private def bindResults(query: String) = {
-    val entries = 
+    val entries =
       EntryServer.findAll.filter(_.name.toLowerCase.
                                  contains(query.toLowerCase))
-    
+
     "#count" #> entries.size.toString &
     ".result" #> entries.map { bindEntry _ }
   }
-  
+
   private def bindEntry(entry: Entry) = {
     ".name" #> entry.name &
-    ".description" #> entry.description.text & 
+    ".description *" #> entry.description.text &
     ".link [href]" #> "/entry/%s".format(urlEncode(entry.name))
   }
-  
+
 }
