@@ -1,5 +1,7 @@
 # Functional Dictionary - A Lift based application
 
+<img src="http://functionaldictionary.mads379.staxapps.net/images/logo.png" style="float:left; padding: 20px;"/>
+
 This is a [Lift](http://www.liftweb.net "Lift") based web application. It's a dictionary of Functional Programming terms where each term can have multiple descriptions. The users can add new terms or descriptions to existing terms. They can also vote on the descriptions so the best ones shows up first.
 
 The purpose of this app is to show people a working Lift based application with a simple purpose. The source code is full of links to the chapters in [Simply Lift](http://simply.liftweb.net/ "Simply Lift") that describe how specific things work in detail. So if you're new to Lift and want to get a general idea of what a Lift application looks like then take a look around.
