@@ -1,6 +1,8 @@
-# Functional Dictionary - A Lift based application
+<center>
+  <img src="http://www.pixelresort.com/mads/funcdict.png"/>
+</center> 
 
-<img src="http://functionaldictionary.mads379.staxapps.net/images/logo.png" style="float:left; padding: 20px;"/>
+# Functional Dictionary - A Lift based application
 
 This is a [Lift](http://www.liftweb.net "Lift") based web application. It's a dictionary of Functional Programming terms where each term can have multiple descriptions. The users can add new terms or descriptions to existing terms. They can also vote on the descriptions so the best ones shows up first.
 
